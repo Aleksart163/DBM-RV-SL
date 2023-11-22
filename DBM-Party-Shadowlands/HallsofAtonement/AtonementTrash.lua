@@ -8,7 +8,7 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 326409 326450 325523 325700 325701 326607 326441",
-	"SPELL_AURA_APPLIED 326450 326891"
+	"SPELL_AURA_APPLIED 326450 326891 325876"
 --	"SPELL_AURA_REMOVED 326409"
 )
 
@@ -16,6 +16,7 @@ mod:RegisterEvents(
 --Notable Halkias Trash
 local warnThrash						= mod:NewSpellAnnounce(326409, 3)
 local warnLoyalBeasts					= mod:NewCastAnnounce(326450, 4)--Announce the cast, in case someone can stun it
+local warnCurseofObliteration			= mod:NewTargetAnnounce(325876, 4) --Проклятие уничтожения
 
 --General
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
@@ -27,6 +28,10 @@ local specWarnCollectSins				= mod:NewSpecialWarningInterrupt(325700, "HasInterr
 local specWarnSiphonLife				= mod:NewSpecialWarningInterrupt(325701, "HasInterrupt", nil, nil, 1, 2)
 --Notable Echelon Trash
 local specWarnTurntoStone				= mod:NewSpecialWarningInterrupt(326607, "HasInterrupt", nil, nil, 1, 2)
+local specWarnCurseofObliteration		= mod:NewSpecialWarningMoveAway(325876, nil, nil, nil, 3, 2) --Проклятие уничтожения
+
+local yellCurseofObliteration			= mod:NewYell(325876, nil, nil, nil, "YELL") --Проклятие уничтожения
+local yellCurseofObliteration2			= mod:NewFadesYell(325876, nil, nil, nil, "YELL") --Проклятие уничтожения
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 generalized
 
@@ -61,6 +66,17 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 326450 and self:AntiSpam(3, 5) then
 		specWarnLoyalBeasts:Show(args.destName)
 		specWarnLoyalBeasts:Play("enrage")
+	elseif spellId == 325876 then --Проклятие уничтожения
+		if args:IsPlayer() then
+			if self:AntiSpam(2.5, "CurseofObliteration") then
+				specWarnCurseofObliteration:Show()
+				specWarnCurseofObliteration:Play("runout")
+			end
+			yellCurseofObliteration:Yell()
+			yellCurseofObliteration2:Countdown(spellId)
+		else
+			warnCurseofObliteration:CombinedShow(1, args.destName)
+		end
 	end
 end
 

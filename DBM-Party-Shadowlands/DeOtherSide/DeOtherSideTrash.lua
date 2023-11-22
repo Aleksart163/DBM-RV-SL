@@ -7,16 +7,18 @@ mod:SetRevision("20220803233609")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 334051 342869 333787 332671 332666 332706 332612 331927 332156 332084 340026",
+	"SPELL_CAST_START 334051 342869 333787 332671 332666 332706 332612 331927 332156 332084 340026 332608",
 	"SPELL_CAST_SUCCESS 328740",
 	"SPELL_AURA_APPLIED 333227 332666 334493 333250",
 	"SPELL_AURA_REMOVED 333227"
 )
 
+--Та сторона--
 --All warnings/recommendations drycoded from https://www.wowhead.com/guides/de-other-side-shadowlands-dungeon-strategy-guide
 --Notable Ring Trash
 local warnUndyingRage					= mod:NewTargetNoFilterAnnounce(333227, 4, nil, "Tank|Healer")
 local warnEnragedMask					= mod:NewSpellAnnounce(342869, 2)
+local warnLightningDischarge			= mod:NewTargetAnnounce(332608, 4) --Искровой разряд
 
 --General
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
@@ -29,7 +31,8 @@ local specWarnBladestorm				= mod:NewSpecialWarningRun(332671, "Melee", nil, nil
 local specWarnRenew						= mod:NewSpecialWarningInterrupt(332666, "HasInterrupt", nil, nil, 1, 2)
 local specWarnRenewDispel				= mod:NewSpecialWarningDispel(332666, "MagicDispeller", nil, nil, 1, 2)
 local specWarnHeal						= mod:NewSpecialWarningInterrupt(332706, "HasInterrupt", nil, nil, 1, 2)
-local specWarnHealingwave				= mod:NewSpecialWarningInterrupt(332612, "HasInterrupt", nil, nil, 1, 2)
+local specWarnHealingwave				= mod:NewSpecialWarningInterrupt(332612, "HasInterrupt", nil, nil, 1, 2) --Волна исцеления
+local specWarnLightningDischarge		= mod:NewSpecialWarningInterrupt(332608, "HasInterrupt", nil, nil, 1, 2) --Искровой разряд
 --Notable The Manastorms Trash
 local specWarnHaywire					= mod:NewSpecialWarningMoveTo(331927, nil, nil, nil, 2, 2)
 local specWarnSpinningUp				= mod:NewSpecialWarningRun(332156, "Melee", nil, nil, 2, 2)
@@ -41,7 +44,17 @@ local specWarnWailingGrief				= mod:NewSpecialWarningSpell(340026, nil, nil, nil
 local specWarnDarkLotus					= mod:NewSpecialWarningDodge(328740, nil, nil, nil, 2, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(333250, nil, nil, nil, 1, 8)
 
+local yellLightningDischarge			= mod:NewYell(332608, nil, nil, nil, "YELL") --Искровой разряд
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 generalized, 7 GTFO
+
+function mod:LightningDischargeTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		yellLightningDischarge:Yell()
+	else
+		warnLightningDischarge:Show(targetname)
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -78,6 +91,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 340026 then
 		specWarnWailingGrief:Show()
 		specWarnWailingGrief:Play("fearsoon")
+	elseif spellId == 332608 then --Искровой разряд
+		self:BossTargetScanner(args.sourceGUID, "LightningDischargeTarget", 0.1, 2)
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			specWarnLightningDischarge:Show()
+			specWarnLightningDischarge:Play("kickcast")
+		end
 	end
 end
 

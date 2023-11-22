@@ -22,6 +22,7 @@ local warnFuriousThrashing				= mod:NewSpellAnnounce(324909, 3)
 local warnTripleBite					= mod:NewStackAnnounce(340288, 2, nil, "Tank|Healer|RemovePoison")
 local warnCrushingLeap					= mod:NewSpellAnnounce(340305, 3)--Change to target warning if target scan debug checks out
 local warnVolatileAcid					= mod:NewTargetAnnounce(325418, 3)
+local warnAnimaInjection				= mod:NewTargetAnnounce(325224, 4) --Инъекция анимы
 
 --General
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
@@ -36,21 +37,25 @@ local specWarnNourishtheForest			= mod:NewSpecialWarningInterrupt(324914, "HasIn
 local specWarnNourishtheForestDispel	= mod:NewSpecialWarningDispel(324914, "MagicDispeller", nil, nil, 1, 2)
 local specWarnBramblethornCoat			= mod:NewSpecialWarningInterrupt(324776, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBramblethornCoatDispel	= mod:NewSpecialWarningDispel(324776, "MagicDispeller", nil, nil, 1, 2)
-local specWarnAnimaInjection			= mod:NewSpecialWarningDispel(325224, "RemoveMagic", nil, nil, 1, 2)
 local specWarnPoisonousSecretions		= mod:NewSpecialWarningDodge(340304, nil, nil, nil, 2, 2)
 local specWarnTongueLashing				= mod:NewSpecialWarningDodge(340300, nil, nil, nil, 2, 2)
 local specWarnRadiantBreath				= mod:NewSpecialWarningDodge(340160, nil, nil, nil, 2, 2)
 local specWarnPoolOfRadiance			= mod:NewSpecialWarningMove(340189, "Tank", nil, nil, 1, 10)
+local specWarnAnimaInjection			= mod:NewSpecialWarningDispel(325224, "RemoveMagic", nil, nil, 1, 2) --Инъекция анимы
+local specWarnAnimaInjection2			= mod:NewSpecialWarningMoveAway(325224, nil, nil, nil, 3, 2) --Инъекция анимы
 --Notable Tred'ova Trash
 local specWarnStimulateResistance		= mod:NewSpecialWarningInterrupt(326046, "HasInterrupt", nil, nil, 1, 2)
 local specWarnStimulateResistanceDispel	= mod:NewSpecialWarningDispel(326046, "MagicDispeller", nil, nil, 1, 2)
 local specWarnStimulateRegeneration		= mod:NewSpecialWarningInterrupt(340544, "HasInterrupt", nil, nil, 1, 2)
 local specWarnVolatileAcid				= mod:NewSpecialWarningMoveAway(325418, nil, nil, nil, 1, 2)
-local yellVolatileAcid					= mod:NewYell(325418)
 --Unknown
 local specWarnSpearFlurry				= mod:NewSpecialWarningDodge(331718, nil, nil, nil, 2, 2)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role
+
+local yellVolatileAcid					= mod:NewYell(325418, nil, nil, nil, "YELL")
+local yellAnimaInjection				= mod:NewYell(325224, nil, nil, nil, "YELL") --Инъекция анимы
+local yellAnimaInjection2				= mod:NewFadesYell(325224, nil, nil, nil, "YELL") --Инъекция анимы
 
 function mod:CrushingLeap(targetname, uId)
 	if not targetname then return end
@@ -105,9 +110,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 340300 and self:AntiSpam(3, 2) then
 		specWarnTongueLashing:Show()
 		specWarnTongueLashing:Play("watchstep")
-	elseif spellId == 340160 and self:AntiSpam(3, 2) then
-		specWarnRadiantBreath:Show()
-		specWarnRadiantBreath:Play("watchstep")
+	elseif spellId == 340160 and self:AntiSpam(2, "RadiantBreath") then
+		if not self:IsNormal() then
+			specWarnRadiantBreath:Show()
+			specWarnRadiantBreath:Play("watchstep")
+		end
 	elseif spellId == 340189 then--No Antispam, not to be throttled against other types
 		specWarnPoolOfRadiance:Show()
 		specWarnPoolOfRadiance:Play("mobout")
@@ -145,9 +152,22 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 322557 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
 		specWarnSoulSplit:Show(args.destName)
 		specWarnSoulSplit:Play("helpdispel")
-	elseif spellId == 325224 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
-		specWarnAnimaInjection:Show(args.destName)
-		specWarnAnimaInjection:Play("helpdispel")
+--	elseif spellId == 325224 and args:IsDestTypePlayer() then
+	elseif spellId == 325224 then
+		if args:IsPlayer() then
+			if self:AntiSpam(2.5, "AnimaInjection") then
+				specWarnAnimaInjection2:Show()
+				specWarnAnimaInjection2:Play("runout")
+			end
+			yellAnimaInjection:Yell()
+			yellAnimaInjection2:Countdown(spellId)
+		else
+			warnAnimaInjection:CombinedShow(0.5, args.destName)
+			if self:CheckDispelFilter() and self:AntiSpam(2.5, "AnimaInjection2") then
+				specWarnAnimaInjection:Show(args.destName)
+				specWarnAnimaInjection:Play("helpdispel")
+			end
+		end
 	elseif spellId == 322486 then
 		if args:IsPlayer() then
 			specWarnOvergrowth:Show()

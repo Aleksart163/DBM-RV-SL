@@ -32,21 +32,23 @@ local warnBackdraft					= mod:NewSpellAnnounce(322908, 4)
 local warnSpear						= mod:NewSpellAnnounce(322921, 1)
 
 --Stage 1
-local specWarnAbyssalDetonation		= mod:NewSpecialWarningMoveTo(334625, nil, nil, nil, 3, 2)
+local specWarnAbyssalDetonation		= mod:NewSpecialWarningMoveTo(334625, nil, nil, nil, 3, 2) --Взрыв великой пустоты (мифик)
+local specWarnAbyssalDetonation2	= mod:NewSpecialWarningRun(334625, nil, nil, nil, 3, 2) --Взрыв великой пустоты
 local specWarnLostConfidence		= mod:NewSpecialWarningMoveAway(322818, nil, nil, nil, 1, 2)
-local yellLostConfidence			= mod:NewYell(322818)
 local specWarnRunThrough			= mod:NewSpecialWarningMoveAway(323943, nil, nil, nil, 1, 2)
-local yellRunThrough				= mod:NewYell(323943)
 local specWarnRunThroughNear		= mod:NewSpecialWarningClose(323943, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(322817, nil, nil, nil, 1, 8)
 
 --Stage 1
-local timerAbyssalDetonationCD		= mod:NewCDTimer(20.6, 334625, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)
+local timerAbyssalDetonationCD		= mod:NewCDTimer(20.6, 334625, nil, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON) --Взрыв великой пустоты
 local timerLostConfidenceCD			= mod:NewCDTimer(31.6, 322818, nil, nil, nil, 3, nil, DBM_COMMON_L.MAGIC_ICON..DBM_COMMON_L.HEALER_ICON)
 local timerRunThroughCD				= mod:NewCDTimer(14.3, 323943, nil, nil, nil, 3)--14.3-20.6
 --Stage 2
 local timerSlipstreamCD				= mod:NewNextTimer(18.2, 322893, nil, nil, nil, 2)
 local timerBackdraftCD				= mod:NewNextTimer(18.2, 322908, nil, nil, nil, 2)
+
+local yellLostConfidence			= mod:NewYell(322818, nil, nil, nil, "YELL")
+local yellRunThrough				= mod:NewYell(323943, nil, nil, nil, "YELL")
 
 local shelter = DBM:GetSpellInfo(335806)
 
@@ -63,8 +65,13 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 334625 then
-		specWarnAbyssalDetonation:Show(shelter)
-		specWarnAbyssalDetonation:Play("findshelter")
+		if self:IsMythic() then
+			specWarnAbyssalDetonation:Show(shelter)
+			specWarnAbyssalDetonation:Play("findshelter")
+		else
+			specWarnAbyssalDetonation2:Show()
+			specWarnAbyssalDetonation2:Play("watchstep")
+		end
 		timerAbyssalDetonationCD:Start()
 	elseif spellId == 322999 then--Stage 2
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))

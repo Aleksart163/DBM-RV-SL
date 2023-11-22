@@ -7,12 +7,13 @@ mod:SetRevision("20220803233609")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 320991 321038 324103 326827 328170 326836",
+	"SPELL_CAST_START 320991 321038 324103 326827 328170 326836 334558",
 	"SPELL_CAST_SUCCESS 324086 334558",
 	"SPELL_AURA_APPLIED 334673 321038 324089 324086",
 	"SPELL_AURA_REMOVED 326827"
 )
 
+--Кровавые Катакомбы--
 --https://www.wowhead.com/guides/sanguine-depths-shadowlands-dungeon-strategy-guide
 --TODO, verify echoing thrust actually targets only tank, and that it can be side stepped
 --TODO, more trash warnings? this is all that was in guide
@@ -20,6 +21,7 @@ mod:RegisterEvents(
 local warnZralisEssence						= mod:NewTargetNoFilterAnnounce(324089, 1)
 local warnShiningRadiance					= mod:NewTargetNoFilterAnnounce(324086, 1)
 local warnDreadBindings						= mod:NewFadesAnnounce(326827, 1)
+local warnVolatileTrap						= mod:NewTargetAnnounce(334558, 4) --Неустойчивая ловушка
 
 --General
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
@@ -33,7 +35,6 @@ local specWarnWrackSoul						= mod:NewSpecialWarningInterrupt(321038, false, nil
 local specWarnWrackSoulDispel				= mod:NewSpecialWarningDispel(321038, "RemoveMagic", nil, nil, 1, 2)
 --Notable General Kaal Trash
 local specWarnGloomSquall					= mod:NewSpecialWarningMoveTo(324103, nil, nil, nil, 3, 2)--Boss version, trash version is 322903
-local yellShiningRadiance					= mod:NewYell(324086, nil, nil, nil, "YELL")
 --Unknown, user request
 local specWarnDreadBindings					= mod:NewSpecialWarningRun(326827, nil, nil, nil, 4, 2)
 local specWarnCraggyFracture				= mod:NewSpecialWarningDodge(328170, nil, nil, nil, 2, 2)
@@ -41,9 +42,21 @@ local specWarnVolatileTrap					= mod:NewSpecialWarningDodge(334558, nil, nil, ni
 
 --local timerShiningRadiance					= mod:NewCDTimer(35, 324086, nil, nil, nil, 5)
 
+local yellShiningRadiance					= mod:NewYell(324086, nil, nil, nil, "YELL")
+local yellVolatileTrap						= mod:NewYell(334558, nil, nil, nil, "YELL") --Неустойчивая ловушка
+
 local shelter = DBM:GetSpellInfo(324086)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
+
+function mod:VolatileTrapTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		yellVolatileTrap:Yell()
+	else
+		warnVolatileTrap:Show(targetname)
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -66,6 +79,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 328170 and self:AntiSpam(3, 2) then
 		specWarnCraggyFracture:Show()
 		specWarnCraggyFracture:Play("watchstep")
+	elseif spellId == 334558 then --Неустойчивая ловушка
+		self:BossTargetScanner(args.sourceGUID, "VolatileTrapTarget", 0.1, 2)
 	end
 end
 

@@ -69,15 +69,15 @@ local function showRealDate(curseDate)
 end
 
 DBM = {
-	Revision = parseCurseDate("20221018190433"),
+	Revision = parseCurseDate("20231122023000"),
 }
 
 local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.2.37"
-	DBM.ReleaseRevision = releaseDate(2022, 10, 18) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "9.2.40"
+	DBM.ReleaseRevision = releaseDate(2023, 11, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 243, "d58ab26"
 elseif isClassic then
 	DBM.DisplayVersion = "1.14.27 alpha"
@@ -8310,10 +8310,13 @@ do
 		return newAnnounce(self, "target", spellId, color or 3, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, true)
 	end
 
-	function bossModPrototype:NewTargetAnnounce(spellId, color, ...)
-		return newAnnounce(self, "target", spellId, color or 3, ...)
+	function bossModPrototype:NewTargetAnnounce(spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption)
+		return newAnnounce(self, "target", spellId, color or 3, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, true)
 	end
-
+	
+--	function bossModPrototype:NewTargetAnnounce(spellId, color, ...)
+--		return newAnnounce(self, "target", spellId, color or 3, ...)
+--	end
 	function bossModPrototype:NewTargetSourceAnnounce(spellId, color, ...)
 		return newAnnounce(self, "targetsource", spellId, color or 3, ...)
 	end

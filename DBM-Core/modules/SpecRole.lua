@@ -127,6 +127,7 @@ if isRetail then
 			["RemoveCurse"] = true,
 			["RemovePoison"] = true,
 			["RemoveEnrage"] = true,
+			["HasInterrupt"] = true,
 		},
 		[103] = {	--Feral Druid
 			["Dps"] = true,
@@ -159,7 +160,7 @@ if isRetail then
 			["RemoveMagic"] = true,
 		},
 		[1447] = {	-- Initial Druid (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
-			["Tank"] = true,
+			["Tank"] = IsSpellKnown(155783),
 			["Melee"] = true,
 			["MeleeDps"] = true,
 			["Physical"] = true,
@@ -377,7 +378,7 @@ if isRetail then
 			["HasInterrupt"] = true,
 			["MagicDispeller"] = true,
 		},
-		[581] = {	--Vengeance Demon Hunter
+		[581] = {	--Vengeance Demon Hunter 320380
 			["Tank"] = true,
 			["Melee"] = true,
 			["Physical"] = true,
@@ -385,7 +386,7 @@ if isRetail then
 			["MagicDispeller"] = true,
 		},
 		[1456] = {	--Initial Demon Hunter (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
-			["Tank"] = true,
+		--	["Tank"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
 			["Physical"] = true,

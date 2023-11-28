@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
  --]]
 --local warnBlackPowder				= mod:NewTargetAnnounce(257314, 4)
 
-local specWarnViciousHeadbutt		= mod:NewSpecialWarningDefensive(319650, "Tank", nil, nil, 1, 2)
+local specWarnViciousHeadbutt		= mod:NewSpecialWarningDefensive(319650, nil, nil, nil, 1, 2) --Жестокий удар головой
 local specWarnHungeringDrain		= mod:NewSpecialWarningInterruptCount(319654, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSeveringSmash			= mod:NewSpecialWarningSpell(319685, nil, nil, nil, 2, 2)
 local specWarnJuggernautRush		= mod:NewSpecialWarningYou(319713, nil, nil, nil, 1, 2)
@@ -34,7 +34,7 @@ local yellJuggernautRushFades		= mod:NewShortFadesYell(319713)
 local specWarnJuggernautRushSoak	= mod:NewSpecialWarningMoveTo(319713, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerViciousHeadbuttCD		= mod:NewCDTimer(18.2, 319650, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON)--18.2 unless delayed by other abilities
+local timerViciousHeadbuttCD		= mod:NewCDTimer(18.2, 319650, nil, nil, nil, 5, nil, DBM_COMMON_L.TANK_ICON) --Жестокий удар головой 18.2 unless delayed by other abilities
 local timerHungeringDrainCD			= mod:NewCDTimer(19.4, 319654, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)
 local timerSeveringSmashCD			= mod:NewCDTimer(38.9, 319685, nil, nil, nil, 6)
 local timerJuggernautRushCD			= mod:NewCDTimer(18.2, 319713, nil, nil, nil, 3)
@@ -43,6 +43,14 @@ mod:AddSetIconOption("SetIconOnJuggernaut", 319713, true, false, {1})
 
 mod.vb.interruptCount = 0
 mod.vb.headbuttCount = 0
+
+function mod:ViciousHeadbuttTarget(targetname, uId) 
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnViciousHeadbutt:Show()
+		specWarnViciousHeadbutt:Play("defensive")
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.interruptCount = 0
@@ -57,8 +65,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 319650 then
 		self.vb.headbuttCount = self.vb.headbuttCount + 1
-		specWarnViciousHeadbutt:Show()
-		specWarnViciousHeadbutt:Play("defensive")
+		self:BossTargetScanner(args.sourceGUID, "ViciousHeadbuttTarget", 0.1, 2)
 		if timerSeveringSmashCD:GetRemaining() >= 18.2 then
 			timerViciousHeadbuttCD:Start()
 		end

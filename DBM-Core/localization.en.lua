@@ -384,6 +384,7 @@ L.AUTO_SPEC_WARN_TEXTS = {
 	run									= "%s - run away",
 	cast								= "%s - stop casting",
 	lookaway							= "%s on %%s - look away",
+	lookaway2							= "%s - look away",
 	reflect								= "%s on >%%s< - stop attacking",
 	count								= "%s! (%%s)",
 	stack								= "%%d stacks of %s on you",
@@ -433,6 +434,7 @@ L.AUTO_SPEC_WARN_OPTIONS = {
 	run 								= "Show special announce to run away from $spell:%s",
 	cast 								= "Show special announce to stop casting for $spell:%s",--Spell Interrupt
 	lookaway							= "Show special announce to look away for $spell:%s",
+	lookaway2							= "Show special announce to look away for $spell:%s",
 	reflect 							= "Show special announce to stop attacking $spell:%s",--Spell Reflect
 	count 								= "Show special announce (with count) for $spell:%s",
 	stack 								= "Show special announce when you are affected by >=%d stacks of $spell:%s",

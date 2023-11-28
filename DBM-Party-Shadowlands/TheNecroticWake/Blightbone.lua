@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_START boss1"
 )
 
+-- Чумокост --
 --TODO, https://shadowlands.wowhead.com/spell=320614/blood-gorge stuff?
 --[[
 (ability.id = 320596 or ability.id = 320637 or ability.id = 320655) and type = "begincast"
@@ -23,12 +24,20 @@ local warnFetidGas					= mod:NewSpellAnnounce(320637, 2)
 local specWarnHeavingRetchYou		= mod:NewSpecialWarningMoveAway(320596, nil, nil, nil, 1, 2)
 local specWarnHeavingRetch			= mod:NewSpecialWarningDodgeLoc(320596, nil, nil, nil, 2, 2)
 local yellHeavingRetch				= mod:NewYell(320596)
-local specWarnCrunch				= mod:NewSpecialWarningDefensive(320655, "Tank", nil, nil, 1, 2)
+local specWarnCrunch				= mod:NewSpecialWarningDefensive(320655, nil, nil, nil, 1, 2) --Хрусть
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(320646, nil, nil, nil, 1, 8)
 
 local timerHeavingRetchCD			= mod:NewCDTimer(32.7, 320596, nil, nil, nil, 3)--32.7-42
 local timerFetidGasCD				= mod:NewCDTimer(24.6, 320637, nil, nil, nil, 3)
-local timerCrunchCD					= mod:NewCDTimer(11.7, 320655, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--11-20, spell queues behind other 2 casts
+local timerCrunchCD					= mod:NewCDTimer(11.7, 320655, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON) --Хрусть 11-20, spell queues behind other 2 casts
+
+function mod:CrunchTarget(targetname, uId) 
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnCrunch:Show()
+		specWarnCrunch:Play("defensive")
+	end
+end
 
 function mod:RetchTarget(targetname, uId)
 	if not targetname then return end
@@ -56,9 +65,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 320637 then
 		warnFetidGas:Show()
 		timerFetidGasCD:Start()
-	elseif spellId == 320655 then
-		specWarnCrunch:Show()
-		specWarnCrunch:Play("defensive")
+	elseif spellId == 320655 then --Хрусть
+		self:BossTargetScanner(args.sourceGUID, "CrunchTarget", 0.1, 2)
+	--	specWarnCrunch:Show()
+	--	specWarnCrunch:Play("defensive")
 		timerCrunchCD:Start()
 	end
 end

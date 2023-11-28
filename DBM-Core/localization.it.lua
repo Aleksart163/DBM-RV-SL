@@ -357,6 +357,7 @@ L.AUTO_SPEC_WARN_TEXTS.jump				= "%s - salta"
 L.AUTO_SPEC_WARN_TEXTS.run				= "%s - scappa"
 L.AUTO_SPEC_WARN_TEXTS.cast				= "%s - interrompi il cast"
 L.AUTO_SPEC_WARN_TEXTS.lookaway			= "%s su %%s - distogli lo sguardo"
+L.AUTO_SPEC_WARN_TEXTS.lookaway2		= "%s - distogli lo sguardo"
 L.AUTO_SPEC_WARN_TEXTS.reflect			= "%s su >%%s< - interrompi l'attacco"
 L.AUTO_SPEC_WARN_TEXTS.count				= "%s! (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.stack				= "%%d stack di %s su di te"
@@ -403,6 +404,7 @@ L.AUTO_SPEC_WARN_OPTIONS.jump			= "Mostra avviso speciale per muoverti per salta
 L.AUTO_SPEC_WARN_OPTIONS.run 			= "Mostra avviso speciale per sfuggire da $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.cast 			= "Mostra avviso speciale per interrompere il cast per $spell:%s" -- Interruzione Abilità
 L.AUTO_SPEC_WARN_OPTIONS.lookaway		= "Mostra avviso speciale per distogliere lo sguardo da $spell:%s"
+L.AUTO_SPEC_WARN_OPTIONS.lookaway2		= "Mostra avviso speciale per distogliere lo sguardo da $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.reflect 		= "Mostra avviso speciale per interrompere gli attacchi con $spell:%s" -- Riflesso Abilità
 L.AUTO_SPEC_WARN_OPTIONS.count 			= "Mostra avviso speciale (con conteggio) per $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.stack 			= "Mostra avviso speciale quando affetto da >= %d stack di $spell:%s"

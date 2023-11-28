@@ -7,11 +7,12 @@ mod:SetRevision("20220803233609")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 326409 326450 325523 325700 325701 326607 326441",
+	"SPELL_CAST_START 326409 326450 325523 325700 325701 326607 326441 325535",
 	"SPELL_AURA_APPLIED 326450 326891 325876"
 --	"SPELL_AURA_REMOVED 326409"
 )
 
+-- Чертоги покаяния --
 --All warnings/recommendations drycoded from https://www.wowhead.com/guides/halls-of-atonement-shadowlands-dungeon-strategy-guide
 --Notable Halkias Trash
 local warnThrash						= mod:NewSpellAnnounce(326409, 3)
@@ -21,6 +22,7 @@ local warnCurseofObliteration			= mod:NewTargetAnnounce(325876, 4) --Прокл�
 --General
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 --Notable Halkias Trash
+local specWarnShoot						= mod:NewSpecialWarningYou(325535, nil, nil, nil, 1, 2) --Выстрел
 local specWarnSinQuake					= mod:NewSpecialWarningDodge(326441, nil, nil, nil, 2, 2)
 local specWarnLoyalBeasts				= mod:NewSpecialWarningTarget(326450, "RemoveEnrage|Tank", nil, nil, 1, 2)--Target because it's hybrid warning
 local specWarnDeadlyThrust				= mod:NewSpecialWarningDodge(325523, "Tank", nil, nil, 1, 2)
@@ -28,12 +30,22 @@ local specWarnCollectSins				= mod:NewSpecialWarningInterrupt(325700, "HasInterr
 local specWarnSiphonLife				= mod:NewSpecialWarningInterrupt(325701, "HasInterrupt", nil, nil, 1, 2)
 --Notable Echelon Trash
 local specWarnTurntoStone				= mod:NewSpecialWarningInterrupt(326607, "HasInterrupt", nil, nil, 1, 2)
-local specWarnCurseofObliteration		= mod:NewSpecialWarningMoveAway(325876, nil, nil, nil, 3, 2) --Проклятие уничтожения
+local specWarnCurseofObliteration		= mod:NewSpecialWarningMoveAway(325876, nil, nil, nil, 1, 2) --Проклятие уничтожения
 
 local yellCurseofObliteration			= mod:NewYell(325876, nil, nil, nil, "YELL") --Проклятие уничтожения
 local yellCurseofObliteration2			= mod:NewFadesYell(325876, nil, nil, nil, "YELL") --Проклятие уничтожения
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 generalized
+
+function mod:ShootTarget(targetname, uId)
+	if not targetname then return end
+	if self:AntiSpam(2, targetname) then
+		if targetname == UnitName("player") then
+			specWarnShoot:Show()
+			specWarnShoot:Play("targetyou")
+		end
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -57,6 +69,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 326607 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnTurntoStone:Show(args.sourceName)
 		specWarnTurntoStone:Play("kickcast")
+	elseif spellId == 325535 then --Выстрел
+		self:BossTargetScanner(args.sourceGUID, "ShootTarget", 0.1, 2)
 	end
 end
 
@@ -67,15 +81,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnLoyalBeasts:Show(args.destName)
 		specWarnLoyalBeasts:Play("enrage")
 	elseif spellId == 325876 then --Проклятие уничтожения
-		if args:IsPlayer() then
-			if self:AntiSpam(2.5, "CurseofObliteration") then
+		if self:AntiSpam(2, args.destName) then
+			if args:IsPlayer() then
+		--	if self:AntiSpam(2.5, "CurseofObliteration") then
 				specWarnCurseofObliteration:Show()
 				specWarnCurseofObliteration:Play("runout")
+				yellCurseofObliteration:Yell()
+				yellCurseofObliteration2:Countdown(spellId)
+			else
+				warnCurseofObliteration:CombinedShow(0.5, args.destName)
 			end
-			yellCurseofObliteration:Yell()
-			yellCurseofObliteration2:Countdown(spellId)
-		else
-			warnCurseofObliteration:CombinedShow(1, args.destName)
 		end
 	end
 end

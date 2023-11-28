@@ -104,10 +104,10 @@ L.CBTPhase							= "Фаза"
 L.CBTImportant						= "Важно"
 -- Missing phrases. End ..
 
-L.TranslationByPrefix		= "Перевод на русский язык - "
-L.TranslationBy 			= "Swix, TOM_RUS, Hollicsh"
-L.Website					= "Посетите наш дискорд: |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Подпишитесь на твиттер: |cFF73C2FB@deadlybossmods или @MysticalOS|r"
-L.WebsiteButton				= "Форумы"
+L.TranslationByPrefix		= "Адаптация под firestorm - "
+L.TranslationBy 			= "Aleksart163 (Куплиняш)"
+L.Website					= "Дискорд для связи по вопросам: |cFF73C2FBAleksart163|r и сайт для обновления: |cFF73C2FBhttps://github.com/Aleksart163/DBM-RV-SL|r"
+L.WebsiteButton				= "Обновление"
 
 L.OTabBosses				= "Боссы"
 L.OTabOptions				= "Настройки"

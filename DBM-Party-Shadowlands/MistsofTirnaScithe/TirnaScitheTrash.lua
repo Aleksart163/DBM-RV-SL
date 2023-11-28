@@ -13,6 +13,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE 340288"
 )
 
+--Туманы Тирна Скитта--
 --All warnings/recommendations drycoded from https://www.wowhead.com/guides/mists-of-tirna-scithe-shadowlands-dungeon-strategy-guide
 --TODO, adjust triple bite stack warnings? More often, less often?
 --TODO, target scan crushing leap? If it can be done, and if the two aoe abilities come from leap target destination, fine tune those warnings too
@@ -42,7 +43,7 @@ local specWarnTongueLashing				= mod:NewSpecialWarningDodge(340300, nil, nil, ni
 local specWarnRadiantBreath				= mod:NewSpecialWarningDodge(340160, nil, nil, nil, 2, 2)
 local specWarnPoolOfRadiance			= mod:NewSpecialWarningMove(340189, "Tank", nil, nil, 1, 10)
 local specWarnAnimaInjection			= mod:NewSpecialWarningDispel(325224, "RemoveMagic", nil, nil, 1, 2) --Инъекция анимы
-local specWarnAnimaInjection2			= mod:NewSpecialWarningMoveAway(325224, nil, nil, nil, 3, 2) --Инъекция анимы
+local specWarnAnimaInjection2			= mod:NewSpecialWarningMoveAway(325224, nil, nil, nil, 1, 2) --Инъекция анимы
 --Notable Tred'ova Trash
 local specWarnStimulateResistance		= mod:NewSpecialWarningInterrupt(326046, "HasInterrupt", nil, nil, 1, 2)
 local specWarnStimulateResistanceDispel	= mod:NewSpecialWarningDispel(326046, "MagicDispeller", nil, nil, 1, 2)
@@ -110,7 +111,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 340300 and self:AntiSpam(3, 2) then
 		specWarnTongueLashing:Show()
 		specWarnTongueLashing:Play("watchstep")
-	elseif spellId == 340160 and self:AntiSpam(2, "RadiantBreath") then
+	elseif spellId == 340160 then
+--	elseif spellId == 340160 and self:AntiSpam(2, "RadiantBreath") then
 		if not self:IsNormal() then
 			specWarnRadiantBreath:Show()
 			specWarnRadiantBreath:Play("watchstep")
@@ -163,8 +165,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellAnimaInjection2:Countdown(spellId)
 		else
 			warnAnimaInjection:CombinedShow(0.5, args.destName)
-			if self:CheckDispelFilter() and self:AntiSpam(2.5, "AnimaInjection2") then
-				specWarnAnimaInjection:Show(args.destName)
+			if self:CheckDispelFilter() then
+				specWarnAnimaInjection:CombinedShow(0.5, args.destName)
 				specWarnAnimaInjection:Play("helpdispel")
 			end
 		end

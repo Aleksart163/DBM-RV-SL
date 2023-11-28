@@ -69,7 +69,7 @@ local function showRealDate(curseDate)
 end
 
 DBM = {
-	Revision = parseCurseDate("20231122023000"),
+	Revision = parseCurseDate("20231129003000"),
 }
 
 local fakeBWVersion, fakeBWHash
@@ -77,7 +77,7 @@ local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
 	DBM.DisplayVersion = "9.2.40"
-	DBM.ReleaseRevision = releaseDate(2023, 11, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.ReleaseRevision = releaseDate(2023, 11, 29) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 243, "d58ab26"
 elseif isClassic then
 	DBM.DisplayVersion = "1.14.27 alpha"
@@ -111,7 +111,39 @@ end
 function DBM:GetTOC()
 	return wowTOC, testBuild, wowVersionString, wowBuild
 end
+----------------------------------------------------------------------------------------------------------------------
+function replaceSpellLinks(id)
+    local spellId = tonumber(id)
+    local spellName = DBM:GetSpellInfo(spellId)
+    if not spellName then
+        spellName = DBM_CORE_UNKNOWN
+        DBM:Debug("Spell ID does not exist: "..spellId)
+    end
+    return ("|cff71d5ff|Hspell:%d:0|h[%s]|h|r"):format(spellId, spellName)
+end
 
+function smartChat(msg, arg, target)
+	if not msg then return end
+    if arg == "rw" and IsInRaid() and DBM:GetRaidRank() > 0 then
+        SendChatMessage(msg, "RAID_WARNING")
+    elseif arg == "say" then
+        SendChatMessage(msg, "SAY")
+    elseif arg == "yell" then
+        SendChatMessage(msg, "YELL")
+    elseif arg == "whisper" then
+		if not target then return end
+        SendChatMessage(msg, "WHISPER", "COMMON", target)
+    elseif (arg == nil) or (arg == "rw" and DBM:GetRaidRank() == 0) or (arg == "rw" and not IsInRaid()) then
+        if IsInRaid() and not IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
+            SendChatMessage(msg, "RAID")
+        elseif IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
+            SendChatMessage(msg, "INSTANCE_CHAT")
+        elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
+            SendChatMessage(msg, "PARTY")
+        end
+    end
+end
+----------------------------------------------------------------------------------------------------------------------
 -- dual profile setup
 local _, playerClass = UnitClass("player")
 DBM_UseDualProfile = true
@@ -8417,7 +8449,8 @@ do
 			if type(spellId) == "string" and spellId:match("ej%d+") then
 				displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or CL.UNKNOWN)
 			else
-				displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:GetSpellInfo(spellId) or CL.UNKNOWN)
+			--	displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:GetSpellInfo(spellId) or CL.UNKNOWN)
+				displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(replaceSpellLinks(spellId) or CL.UNKNOWN)
 			end
 		end
 		--Passed spellid as yellText.
@@ -8775,6 +8808,7 @@ do
 		["run"] = "spell",
 		["cast"] = "spell",
 		["lookaway"] = "spell",
+		["lookaway2"] = "spell",
 		["reflect"] = "target",
 	}
 
@@ -9372,6 +9406,10 @@ do
 
 	function bossModPrototype:NewSpecialWarningLookAway(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "lookaway", spellId, nil, optionDefault, ...)
+	end
+	
+	function bossModPrototype:NewSpecialWarningLookAway2(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "lookaway2", spellId, nil, optionDefault, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarningReflect(spellId, optionDefault, ...)

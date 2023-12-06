@@ -23,6 +23,7 @@ local warnSharedAgony						= mod:NewCastAnnounce(327401, 3)
 local warnSharedAgonyTargets				= mod:NewTargetAnnounce(327401, 4)
 local warnTenderize							= mod:NewStackAnnounce(338357, 2, nil, "Tank|Healer")
 local warnThrowCleaver						= mod:NewCastAnnounce(323496, 2)
+local warnRaspingScream						= mod:NewCastAnnounce(324293, 2) --Дребезжащий крик
 --Unknown
 local warnSpewDisease						= mod:NewTargetNoFilterAnnounce(333479, 2)
 local warnMorbidFixation					= mod:NewTargetNoFilterAnnounce(338606, 2)
@@ -35,12 +36,10 @@ local specWarnClingingDarkness				= mod:NewSpecialWarningDispel(323347, false, n
 local specWarnDrainFluids					= mod:NewSpecialWarningInterrupt(334748, false, nil, 2, 1, 2)--Based on feedback. it's too spammy to be on by default
 --Notable Amarth Trash
 local specWarnNecroticBolt					= mod:NewSpecialWarningInterrupt(320462, "HasInterrupt", nil, nil, 1, 2)
-local specWarnRaspingScream					= mod:NewSpecialWarningInterrupt(324293, "HasInterrupt", nil, nil, 1, 2)
+local specWarnRaspingScream					= mod:NewSpecialWarningInterrupt(324293, "HasInterrupt", nil, nil, 1, 2) --Дребезжащий крик
 local specWarnSharedAgony					= mod:NewSpecialWarningMoveAway(327401, nil, nil, nil, 1, 11)
-local yellSharedAgony						= mod:NewYell(327401)
 local specWarnDarkShroud					= mod:NewSpecialWarningDispel(335141, "MagicDispeller", nil, nil, 1, 2)
 local specWarnReapingWinds					= mod:NewSpecialWarningRun(324372, nil, nil, nil, 4, 2)
-local yellThrowCleaver						= mod:NewYell(323496)
 --Notable Surgeon Stitchflesh Trash
 local specWarnGoresplatter					= mod:NewSpecialWarningInterrupt(338353, false, nil, nil, 1, 2)--Off by default since enemy has two casts and this is lower priority one
 local specWarnGoresplatterDispel			= mod:NewSpecialWarningDispel(338353, "RemoveDisease", nil, nil, 1, 2)
@@ -48,13 +47,15 @@ local specWarnGoresplatterDispel			= mod:NewSpecialWarningDispel(338353, "Remove
 local specWarnSpineCrush					= mod:NewSpecialWarningDodge(327240, nil, nil, nil, 2, 2)--Not sure where these spawn, not in guide, but I still feel warning worth having
 local specWarnGutSlice						= mod:NewSpecialWarningDodge(333477, nil, nil, nil, 2, 2)
 local specWarnSpewDisease					= mod:NewSpecialWarningYou(333479, nil, nil, nil, 1, 2)
-local yellSpewDisease						= mod:NewYell(333479)
 local specWarnMorbidFixation				= mod:NewSpecialWarningRun(338606, nil, nil, nil, 4, 2)
 local timerMorbidFixation					= mod:NewTargetTimer(8, 338606, nil, nil, nil, 2)
 local specWarnGrimFate						= mod:NewSpecialWarningMoveAway(327396, nil, nil, nil, 1, 2)
-local yellGrimFate							= mod:NewYell(327396)
-local yellGrimFateFades						= mod:NewShortFadesYell(327396)
 
+local yellSharedAgony						= mod:NewYell(327401, nil, nil, nil, "YELL")
+local yellThrowCleaver						= mod:NewYell(323496, nil, nil, nil, "YELL")
+local yellSpewDisease						= mod:NewYell(333479, nil, nil, nil, "YELL")
+local yellGrimFate							= mod:NewYell(327396, nil, nil, nil, "YELL")
+local yellGrimFateFades						= mod:NewShortFadesYell(327396, nil, nil, nil, "YELL")
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 
 function mod:ThrowCleaver(targetname, uId)
@@ -93,17 +94,21 @@ end
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 324293 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnRaspingScream:Show(args.sourceName)
-		specWarnRaspingScream:Play("kickcast")
+	if spellId == 324293 then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			specWarnRaspingScream:Show()
+			specWarnRaspingScream:Play("kickcast")
+		elseif self:AntiSpam(2, "RaspingScream") then
+			warnRaspingScream:Show()
+		end
 	elseif spellId == 334748 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnDrainFluids:Show(args.sourceName)
+		specWarnDrainFluids:Show()
 		specWarnDrainFluids:Play("kickcast")
 	elseif spellId == 320462 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnNecroticBolt:Show(args.sourceName)
+		specWarnNecroticBolt:Show()
 		specWarnNecroticBolt:Play("kickcast")
 	elseif spellId == 338353 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnGoresplatter:Show(args.sourceName)
+		specWarnGoresplatter:Show()
 		specWarnGoresplatter:Play("kickcast")
 	elseif spellId == 327240 and self:AntiSpam(3, 2) then
 		specWarnSpineCrush:Show()
@@ -161,12 +166,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMorbidFixation:Play("justrun")
 		end
 	elseif spellId == 327396 then
-		warnGrimFate:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnGrimFate:Show()
 			specWarnGrimFate:Play("runout")
 			yellGrimFate:Yell()
 			yellGrimFateFades:Countdown(spellId)
+		else
+			warnGrimFate:CombinedShow(0.3, args.destName)
 		end
 	end
 end

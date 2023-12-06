@@ -9,7 +9,8 @@ mod.isTrashMod = true
 mod:RegisterEvents(
 	"SPELL_CAST_START 334051 342869 333787 332671 332666 332706 332612 331927 332156 332084 340026 332608",
 	"SPELL_CAST_SUCCESS 328740",
-	"SPELL_AURA_APPLIED 333227 332666 334493 333250",
+	"SPELL_AURA_APPLIED 333227 332666 334493 333250 334496",
+	"SPELL_AURA_APPLIED_DOSE 334496",
 	"SPELL_AURA_REMOVED 333227"
 )
 
@@ -33,11 +34,13 @@ local specWarnRenewDispel				= mod:NewSpecialWarningDispel(332666, "MagicDispell
 local specWarnHeal						= mod:NewSpecialWarningInterrupt(332706, "HasInterrupt", nil, nil, 1, 2)
 local specWarnHealingwave				= mod:NewSpecialWarningInterrupt(332612, "HasInterrupt", nil, nil, 1, 2) --Волна исцеления
 local specWarnLightningDischarge		= mod:NewSpecialWarningInterrupt(332608, "HasInterrupt", nil, nil, 1, 2) --Искровой разряд
+local specWarnLightningDischarge2		= mod:NewSpecialWarningMoveAway(332608, nil, nil, nil, 1, 2) --Искровой разряд
 --Notable The Manastorms Trash
 local specWarnHaywire					= mod:NewSpecialWarningMoveTo(331927, nil, nil, nil, 2, 2)
 local specWarnSpinningUp				= mod:NewSpecialWarningRun(332156, "Melee", nil, nil, 2, 2)
 local specWarnSelfCleaningCycle			= mod:NewSpecialWarningInterrupt(332084, "HasInterrupt", nil, nil, 1, 2)
 --Notable Dealer Xy'exa Trash
+local specWarnSoporificShimmerdust		= mod:NewSpecialWarningStack(334496, nil, 7, nil, nil, 1, 6) --Сонная мерцающая пыльца
 local specWarnSporificShimmerdust		= mod:NewSpecialWarningJump(334493, nil, nil, nil, 1, 6)
 local specWarnWailingGrief				= mod:NewSpecialWarningSpell(340026, nil, nil, nil, 2, 2)
 --Unknown
@@ -50,6 +53,8 @@ local yellLightningDischarge			= mod:NewYell(332608, nil, nil, nil, "YELL") --И
 function mod:LightningDischargeTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
+		specWarnLightningDischarge2:Show()
+		specWarnLightningDischarge2:Play("runout")
 		yellLightningDischarge:Yell()
 	else
 		warnLightningDischarge:Show(targetname)
@@ -92,7 +97,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnWailingGrief:Show()
 		specWarnWailingGrief:Play("fearsoon")
 	elseif spellId == 332608 then --Искровой разряд
-		self:BossTargetScanner(args.sourceGUID, "LightningDischargeTarget", 0.1, 2)
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "LightningDischargeTarget", 0.1, 4)
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnLightningDischarge:Show()
 			specWarnLightningDischarge:Play("kickcast")
@@ -129,5 +134,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 333250 and args:IsPlayer() and self:AntiSpam(3, 7) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
+	elseif spellId == 334496 then --Сонная мерцающая пыльца
+		local amount = args.amount or 1
+		if amount >= 7 then
+			if args:IsPlayer() then
+				specWarnSoporificShimmerdust:Show(amount)
+				specWarnSoporificShimmerdust:Play("stackhigh")
+			end
+		end
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

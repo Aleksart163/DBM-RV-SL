@@ -38,6 +38,7 @@ local specWarnMasterofDeath			= mod:NewSpecialWarningDodge(325258, nil, nil, nil
 local specWarnCosmicArtifice		= mod:NewSpecialWarningMoveAway(325725, nil, nil, nil, 1, 2) --Космическая уловка
 local specWarnSoulcrusher			= mod:NewSpecialWarningDefensive(327646, "Tank", nil, nil, 2, 2)
 local specWarnShatterReality		= mod:NewSpecialWarningMoveTo(326171, nil, nil, nil, 3, 2) --Раскол реальности
+local specWarnShatterReality2		= mod:NewSpecialWarningSpell(326171, nil, nil, nil, 1, 2) --Раскол реальности
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 --Stage 2: Shattered Reality
 
@@ -85,7 +86,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerSoulcrusherCD:Start(20, self.vb.soulCount+1)
 		end
-	elseif spellId == 326171 then --Раскол реальности (Phase 1 End and big aoe)
+	elseif spellId == 326171 then --Раскол реальности
 		self.vb.shatterRealityCount = self.vb.shatterRealityCount + 1
 		timerShatterRealityCD:Stop()
 		timerMasterofDeathCD:Stop()
@@ -93,6 +94,8 @@ function mod:SPELL_CAST_START(args)
 		timerSoulcrusherCD:Stop()
 		warnShatterReality:Show()
 		timerShatterReality:Start()
+		specWarnShatterReality2:Show()
+		specWarnShatterReality2:Play("watchstep")
 		specWarnShatterReality:Schedule(5, Deathgate)
 		specWarnShatterReality:ScheduleVoice(5, "findshelter")
 	end

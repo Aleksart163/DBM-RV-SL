@@ -73,7 +73,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 330614 and self:AntiSpam(3, 2) then
 		specWarnVileEruption:Show()
 		specWarnVileEruption:Play("watchstep")
-	elseif spellId == 333294 and self:AntiSpam(3, 2) then
+	elseif spellId == 333294 and self:AntiSpam(2, "DeathWinds") then
 		specWarnDeathWinds:Show()
 		specWarnDeathWinds:Play("watchstep")
 	elseif spellId == 331237 and self:AntiSpam(3, 2) then

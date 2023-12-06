@@ -3,15 +3,15 @@ if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 
-L.HOW_TO_USE_MOD					= "Benvenuto in DBM. Scrivi /dbm help per avere una lista dei comandi supportati. Per accedere alle opzioni scrivi in chat /dbm. Carica le zone specifiche per configurare manualmente ogni settaggio di ogni boss. DBM prova a farlo per te controllando la tua specializzazione alla prima esecuzione, ma alcuni potrebbero volere alcune opzioni attivate."
-L.SILENT_REMINDER					= "Avviso: DBM è in modalità silente."
+L.HOW_TO_USE_MOD					= "Benvenuto in " .. L.DBM .. ". Scrivi /dbm help per avere una lista dei comandi supportati. Per accedere alle opzioni scrivi in chat /dbm. Carica le zone specifiche per configurare manualmente ogni settaggio di ogni boss. " .. L.DBM .. " prova a farlo per te controllando la tua specializzazione alla prima esecuzione, ma alcuni potrebbero volere alcune opzioni attivate."
+L.SILENT_REMINDER					= "Avviso: " .. L.DBM .. " è in modalità silente."
 
-L.LOAD_MOD_ERROR				= "Errore nel caricamento della Boss Mod %s: %s"
+L.LOAD_MOD_ERROR			= "Errore nel caricamento della Boss Mod %s: %s"
 L.LOAD_MOD_SUCCESS			= "Caricate '%s' mod. Per opzioni quali avvisi sonori e avvertimenti personalizzati, digitare /dbm."
 L.LOAD_MOD_COMBAT			= "Caricamento di '%s' rimandato al termine del combattimento"
-L.LOAD_GUI_ERROR				= "Non riesco a caricare l'Interfaccia: %s"
+L.LOAD_GUI_ERROR			= "Non riesco a caricare l'Interfaccia: %s"
 L.LOAD_GUI_COMBAT			= "L'Interfaccia non può essere inizializzata in combattimento, verrà caricata al termine dello stesso. Caricata, potrai aprirla anche in combattimento."
-L.BAD_LOAD					= "DBM non è stato in grado di caricare completamente la mod in quanto in combattimento. Al termine dello stesso, esegui /console reloadui il prima possibile."
+L.BAD_LOAD					= L.DBM .. " non è stato in grado di caricare completamente la mod in quanto in combattimento. Al termine dello stesso, esegui /console reloadui il prima possibile."
 L.LOAD_MOD_VER_MISMATCH		= "%s non può essere caricata in quanto DBM-Core non rispetta i requisiti. E' richiesta la versione aggiornata."
 L.LOAD_MOD_EXP_MISMATCH		= "%s non può essere caricata in quanto è sviluppata per un'espansione di WoW non ancora disponibile. Quando diverrà disponibile, questa mod funzionerà."
 L.LOAD_MOD_TOC_MISMATCH		= "%s non può essere caricata in quanto è sviluppata per una patch di WoW (%s) non ancora disponibile. Quando diverrà disponibile, questa mod funzionerà."
@@ -25,13 +25,13 @@ L.NO_RANGE					= "Il Radar Distanziometro non può essere utilizzato nelle istan
 L.NO_ARROW					= "La Freccia non può essere usata nelle istanze"
 L.NO_HUD						= "La HUDMap non può essere usata nelle istanze"
 
-L.DYNAMIC_DIFFICULTY_CLUMP	= "DBM ha disabilitato il riquadro distanziometro per questo combattimento per insufficienti informazioni sulle distanze richieste con un gruppo di queste dimensioni."
-L.DYNAMIC_ADD_COUNT			= "DBM ha disabilitato gli avvisi sulla quantità degli add per questo combattimento per insufficienti informazioni sul numero di add presenti con un gruppo di queste dimensioni."
-L.DYNAMIC_MULTIPLE			= "DBM ha disabilitato diverse funzionalità per questo combattimento per insufficienti informazioni su alcune meccaniche con un gruppo di queste dimensioni."
+L.DYNAMIC_DIFFICULTY_CLUMP	= L.DBM .. " ha disabilitato il riquadro distanziometro per questo combattimento per insufficienti informazioni sulle distanze richieste con un gruppo di queste dimensioni."
+L.DYNAMIC_ADD_COUNT			= L.DBM .. " ha disabilitato gli avvisi sulla quantità degli add per questo combattimento per insufficienti informazioni sul numero di add presenti con un gruppo di queste dimensioni."
+L.DYNAMIC_MULTIPLE			= L.DBM .. " ha disabilitato diverse funzionalità per questo combattimento per insufficienti informazioni su alcune meccaniche con un gruppo di queste dimensioni."
 
 L.LOOT_SPEC_REMINDER			= "La tua spec è %s. Il bottino selezionato è %s."
 
-L.BIGWIGS_ICON_CONFLICT		= "DBM ha rilevato l'abilitazione delle icone incursioni sia in BigWigs che in DBM. Disabilita le icone in uno dei due per evitare conflitti"
+L.BIGWIGS_ICON_CONFLICT		= L.DBM .. " ha rilevato l'abilitazione delle icone incursioni sia in BigWigs che in DBM. Disabilita le icone in uno dei due per evitare conflitti"
 
 L.MOD_AVAILABLE				= "%s è disponibile per questa ziona. E' possibile scaricare la mod da Curse, WoWI o deadlybossmods.com"
 

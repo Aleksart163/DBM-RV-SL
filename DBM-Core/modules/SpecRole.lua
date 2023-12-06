@@ -27,6 +27,7 @@ local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 }]]
 
 local specRoleTable
+local IsSpellKnown = IsSpellKnown
 
 -- Retail
 if isRetail then
@@ -160,7 +161,7 @@ if isRetail then
 			["RemoveMagic"] = true,
 		},
 		[1447] = {	-- Initial Druid (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
-			["Tank"] = IsSpellKnown(155783),
+			["Tank"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
 			["Physical"] = true,
@@ -378,7 +379,7 @@ if isRetail then
 			["HasInterrupt"] = true,
 			["MagicDispeller"] = true,
 		},
-		[581] = {	--Vengeance Demon Hunter 320380
+		[581] = {	--Vengeance Demon Hunter 
 			["Tank"] = true,
 			["Melee"] = true,
 			["Physical"] = true,
@@ -386,7 +387,7 @@ if isRetail then
 			["MagicDispeller"] = true,
 		},
 		[1456] = {	--Initial Demon Hunter (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
-		--	["Tank"] = true,
+			["Tank"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
 			["Physical"] = true,
@@ -434,8 +435,7 @@ if isRetail then
 	specRoleTable[266] = specRoleTable[265]--Demonology Warlock same as Affliction
 	specRoleTable[267] = specRoleTable[265]--Destruction Warlock same as Affliction
 else
-	local IsSpellKnown = IsSpellKnown
-
+	
 	specRoleTable = {
 		["MAGE1"] = {	--Arcane Mage
 			["Dps"] = true,

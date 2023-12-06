@@ -2,13 +2,13 @@ DBM_CORE_L = {}
 
 local L = DBM_CORE_L
 
-L.DEADLY_BOSS_MODS						= "Deadly Boss Mods" -- NO TRANSLATE
-L.DBM									= "DBM" -- NO TRANSLATE
+L.DEADLY_BOSS_MODS						= "Dungeon Boss Master"
+L.DBM									= "DBM RV"
 
 local dateTable = date("*t")
 if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
-	L.DEADLY_BOSS_MODS					= "Harmless Boss Mods"
-	L.DBM								= "HBM"
+	L.DEADLY_BOSS_MODS					= "Dungeon Boss Master"
+	L.DBM								= "DBM RV"
 end
 
 L.HOW_TO_USE_MOD						= "Welcome to " .. L.DBM .. ". Type /dbm help for a list of supported commands. To access options type /dbm in your chat to begin configuration. Load specific zones manually to configure any boss specific settings to your liking as well. " .. L.DBM .. " will setup defaults for your spec, but you may want to fine tune these."
@@ -394,7 +394,8 @@ L.AUTO_SPEC_WARN_TEXTS = {
 	adds								= "Incoming Adds - switch targets",--Basically a generic of switch
 	addscount							= "Incoming Adds - switch targets (%%s)",--Basically a generic of switch
 	addscustom							= "Incoming Adds - %%s",--Same as above, but more info, pretty much made for like 3 boss mods, such as akama
-	targetchange						= "Target Change - switch to %%s"
+	targetchange						= "Target Change - switch to %%s",
+	targetchange						= "%s - use %%s"
 }
 
 -- Auto-generated Special Warning Localizations
@@ -437,14 +438,15 @@ L.AUTO_SPEC_WARN_OPTIONS = {
 	lookaway2							= "Show special announce to look away for $spell:%s",
 	reflect 							= "Show special announce to stop attacking $spell:%s",--Spell Reflect
 	count 								= "Show special announce (with count) for $spell:%s",
-	stack 								= "Show special announce when you are affected by >=%d stacks of $spell:%s",
+	stack 								= "Show special announce when you are affected by >= %d stacks of $spell:%s",
 	switch								= "Show special announce to switch targets for $spell:%s",
 	switchcount							= "Show special announce (with count) to switch targets for $spell:%s",
 	gtfo 								= "Show special announce to move out of bad stuff on ground",
 	adds								= "Show special announce to switch targets for incoming adds",
 	addscount							= "Show special announce (with count) to switch targets for incoming adds",
 	addscustom							= "Show special announce for incoming adds",
-	targetchange						= "Show special announce for priority target changes"
+	targetchange						= "Show special announce for priority target changes",
+	usespell							= "Show special announce for using a particularly important ability"
 }
 
 -- Auto-generated Timer Localizations

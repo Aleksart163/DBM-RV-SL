@@ -8,7 +8,7 @@ mod:SetEncounterID(2363)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 323821 324103",
+	"SPELL_CAST_START 323821 322903",
 	"SPELL_CAST_SUCCESS 323845 324086",
 	"SPELL_AURA_APPLIED 323845",
 	"SPELL_AURA_REMOVED 323845"
@@ -27,12 +27,13 @@ local warnShiningRadiance			= mod:NewTargetNoFilterAnnounce(324086, 1)
 
 local specWarnWickedRush			= mod:NewSpecialWarningMoveAway(323845, nil, nil, nil, 1, 2)
 local specWarnPiercingBlur			= mod:NewSpecialWarningDodge(323810, nil, nil, nil, 2, 2)
-local specWarnGloomSquall			= mod:NewSpecialWarningMoveTo(324103, nil, nil, nil, 3, 2) --Порыв мрака
+local specWarnGloomSquall			= mod:NewSpecialWarningMoveTo(322903, nil, nil, nil, 3, 2) --Порыв мрака
+local specWarnGloomSquall2			= mod:NewSpecialWarningUseSpell(322903, nil, nil, nil, 3, 2) --Порыв мрака
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerWickedRushCD				= mod:NewCDTimer(15.8, 323845, nil, nil, nil, 3)--5.7, 15.8, 20.7, 15.8
 local timerPiercingBlurCD			= mod:NewCDTimer(9.3, 323810, nil, nil, nil, 3)--9.3 now? (17-25.4 old)
-local timerGloomSquallCD			= mod:NewCDTimer(37.7, 324103, nil, nil, nil, 2, nil, DBM_COMMON_L.IMPORTANT_ICON) --Порыв мрака
+local timerGloomSquallCD			= mod:NewCDTimer(37.7, 322903, nil, nil, nil, 2, nil, DBM_COMMON_L.IMPORTANT_ICON) --Порыв мрака
 --local timerShiningRadiance			= mod:NewCDTimer(35, 324086, nil, nil, nil, 5)
 
 local yellWickedRush				= mod:NewYell(323845, nil, nil, nil, "YELL")
@@ -41,7 +42,9 @@ local yellShiningRadiance			= mod:NewYell(324086, nil, nil, nil, "YELL")
 
 mod.vb.rushCast = 0
 mod.vb.blurCast = 1
+
 local shelter = DBM:GetSpellInfo(324086)
+local essence = DBM:GetSpellInfo(324089)
 
 function mod:OnCombatStart(delay)
 	self.vb.rushCast = 0
@@ -58,12 +61,17 @@ function mod:SPELL_CAST_START(args)
 		specWarnPiercingBlur:Show()
 		specWarnPiercingBlur:Play("watchstep")
 		timerPiercingBlurCD:Start()
-	elseif spellId == 324103 then --Порыв мрака
+	elseif spellId == 322903 then --Порыв мрака
 		--Each ability cast twice between glooms, then sequence starts over
 		self.vb.rushCast = 0
 		self.vb.blurCast = 0
-		specWarnGloomSquall:Show(shelter)
-		specWarnGloomSquall:Play("findshelter")
+		if ExtraActionBarFrame:IsShown() then
+			specWarnGloomSquall2:Show(essence)
+			specWarnGloomSquall2:Play("useitem")
+		else
+			specWarnGloomSquall:Show(shelter)
+			specWarnGloomSquall:Play("findshelter")
+		end
 		timerGloomSquallCD:Start()
 	end
 end

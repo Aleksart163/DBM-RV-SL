@@ -33,8 +33,7 @@ local warnSpear						= mod:NewSpellAnnounce(322921, 1)
 
 --Stage 1
 local specWarnAbyssalDetonation		= mod:NewSpecialWarningMoveTo(334625, nil, nil, nil, 3, 2) --Взрыв великой пустоты (мифик)
-local specWarnAbyssalDetonation2	= mod:NewSpecialWarningRun(334625, nil, nil, nil, 3, 2) --Взрыв великой пустоты
-local specWarnAbyssalDetonation3	= mod:NewSpecialWarningDodge(334625, nil, nil, nil, 2, 2) --Взрыв великой пустоты
+local specWarnAbyssalDetonation2	= mod:NewSpecialWarningDodge(334625, nil, nil, nil, 2, 2) --Взрыв великой пустоты
 local specWarnLostConfidence		= mod:NewSpecialWarningMoveAway(322818, nil, nil, nil, 1, 2)
 local specWarnRunThrough			= mod:NewSpecialWarningMoveAway(323943, nil, nil, nil, 1, 2)
 local specWarnRunThroughNear		= mod:NewSpecialWarningClose(323943, nil, nil, nil, 1, 2)
@@ -70,13 +69,8 @@ function mod:SPELL_CAST_START(args)
 			specWarnAbyssalDetonation:Show(shelter)
 			specWarnAbyssalDetonation:Play("findshelter")
 		else
-			if self:IsMelee() then
-				specWarnAbyssalDetonation2:Show()
-				specWarnAbyssalDetonation2:Play("runout")
-			else
-				specWarnAbyssalDetonation3:Show()
-				specWarnAbyssalDetonation3:Play("watchstep")
-			end
+			specWarnAbyssalDetonation2:Show()
+			specWarnAbyssalDetonation2:Play("watchstep")
 		end
 		timerAbyssalDetonationCD:Start()
 	elseif spellId == 322999 then--Stage 2

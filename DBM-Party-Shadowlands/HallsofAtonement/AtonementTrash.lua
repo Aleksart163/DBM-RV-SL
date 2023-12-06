@@ -70,7 +70,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnTurntoStone:Show(args.sourceName)
 		specWarnTurntoStone:Play("kickcast")
 	elseif spellId == 325535 then --Выстрел
-		self:BossTargetScanner(args.sourceGUID, "ShootTarget", 0.1, 2)
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ShootTarget", 0.1, 4)
 	end
 end
 

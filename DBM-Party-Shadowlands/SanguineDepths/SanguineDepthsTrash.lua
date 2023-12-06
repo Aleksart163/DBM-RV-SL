@@ -7,7 +7,7 @@ mod:SetRevision("20220803233609")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 320991 321038 326827 328170 326836 334558 322903",
+	"SPELL_CAST_START 320991 321038 326827 328170 326836 334558 324103",
 	"SPELL_CAST_SUCCESS 324086 334558",
 	"SPELL_AURA_APPLIED 334673 321038 324089 324086",
 	"SPELL_AURA_REMOVED 326827"
@@ -35,7 +35,8 @@ local specWarnCurseofSuppressionDispel		= mod:NewSpecialWarningDispel(326836, "R
 local specWarnWrackSoul						= mod:NewSpecialWarningInterrupt(321038, false, nil, 2, 1, 2)
 local specWarnWrackSoulDispel				= mod:NewSpecialWarningDispel(321038, "RemoveMagic", nil, nil, 1, 2)
 --Notable General Kaal Trash
-local specWarnGloomSquall					= mod:NewSpecialWarningMoveTo(322903, nil, nil, nil, 3, 2) --Порыв мрака
+local specWarnGloomSquall					= mod:NewSpecialWarningMoveTo(324103, nil, nil, nil, 3, 2) --Порыв мрака
+local specWarnGloomSquall2					= mod:NewSpecialWarningUseSpell(324103, nil, nil, nil, 3, 2) --Порыв мрака
 --Unknown, user request
 local specWarnDreadBindings					= mod:NewSpecialWarningRun(326827, nil, nil, nil, 4, 2)
 local specWarnCraggyFracture				= mod:NewSpecialWarningDodge(328170, nil, nil, nil, 2, 2)
@@ -46,6 +47,7 @@ local yellShiningRadiance					= mod:NewYell(324086, nil, nil, nil, "YELL")
 local yellVolatileTrap						= mod:NewYell(334558, nil, nil, nil, "YELL") --Неустойчивая ловушка
 
 local shelter = DBM:GetSpellInfo(324086)
+local essence = DBM:GetSpellInfo(324089)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 
@@ -72,9 +74,14 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 321038 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnWrackSoul:Show(args.sourceName)
 		specWarnWrackSoul:Play("kickcast")
-	elseif spellId == 322903 then --Порыв мрака
-		specWarnGloomSquall:Show(shelter)
-		specWarnGloomSquall:Play("findshelter")
+	elseif spellId == 324103 then --Порыв мрака
+		if ExtraActionBarFrame:IsShown() then
+			specWarnGloomSquall2:Show(essence)
+			specWarnGloomSquall2:Play("useitem")
+		else
+			specWarnGloomSquall:Show(shelter)
+			specWarnGloomSquall:Play("findshelter")
+		end
 	elseif spellId == 326827 then
 		specWarnDreadBindings:Show()
 		specWarnDreadBindings:Play("justrun")

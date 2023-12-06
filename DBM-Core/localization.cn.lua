@@ -201,7 +201,7 @@ L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h向你发送了一个" .. L.DBM 
 L.PIZZA_CONFIRM_IGNORE			= "是否要在该次游戏连接中屏蔽来自%s的计时条？"
 L.PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <时间（秒）> <文本>"
 
---L.MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
+--L.MINIMAP_TOOLTIP_HEADER		= "Dungeon Boss Mods"
 L.MINIMAP_TOOLTIP_FOOTER		= "Shift+拖动 / 右键拖动：拖动\nAlt+Shift+拖动：自由拖动"
 
 L.RANGECHECK_HEADER			= "距离监视（%d码）"

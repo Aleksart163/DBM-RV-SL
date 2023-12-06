@@ -2,12 +2,13 @@ DBM_GUI_L = {}
 
 local L = DBM_GUI_L
 
-L.MainFrame = "Deadly Boss Mods"
+L.MainFrame = "Dungeon Boss Master"
+L.DBM2 		= "DBM RV"
 
-L.TranslationByPrefix		= "Translated by "
-L.TranslationBy 			= nil -- your name here, localizers!
-L.Website					= "Visit us on discord at |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Follow on twitter @deadlybossmods or @MysticalOS"
-L.WebsiteButton				= "Website"
+L.TranslationByPrefix		= "Adaptation for firestorm - "
+L.TranslationBy 			= "Aleksart163 (Куплиняшка х100)" -- your name here, localizers!
+L.Website					= "Discord for contact with questions: |cFF73C2FBAleksart163|r and site for updates: |cFF73C2FBhttps://github.com/Aleksart163/DBM-RV-SL|r"
+L.WebsiteButton				= "Update"
 
 L.OTabBosses	= "Bosses"--Deprecated and will be deleted once tabs no longer use this
 L.OTabRaids		= "Raid"--Raids & PVP

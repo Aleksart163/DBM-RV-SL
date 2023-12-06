@@ -1,8 +1,7 @@
--- *********************************************************
--- **               Deadly Boss Mods - Core               **
--- **              https://deadlybossmods.com             **
--- **          https://patreon.com/deadlybossmods         **
--- *********************************************************
+-- ********************************************************
+-- **               Dungeon Boss Mods - Core             **
+--  **     https://github.com/Aleksart163/DBM-RV-SL     **
+--   ****************************************************
 --
 -- This addon is written and copyrighted by:
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
@@ -9454,6 +9453,10 @@ do
 
 	function bossModPrototype:NewSpecialWarningPreWarn(spellId, optionDefault, time, ...)
 		return newSpecialWarning(self, "prewarn", spellId, time, optionDefault, ...)
+	end
+	
+	function bossModPrototype:NewSpecialWarningUseSpell(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "usespell", spellId, nil, optionDefault, ...)
 	end
 
 	function DBM:PlayCountSound(number, forceVoice, forcePath)

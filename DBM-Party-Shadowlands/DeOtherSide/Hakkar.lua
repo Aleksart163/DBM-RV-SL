@@ -37,7 +37,6 @@ local warnZealous					= mod:NewTargetAnnounce(328987, 2)
 --Hakkar the Soulflayer
 local specWarnBloodBarrage			= mod:NewSpecialWarningInterrupt(323064, "HasInterrupt", nil, nil, 1, 2)
 local specWarnCorruptedBlood		= mod:NewSpecialWarningMoveAway(322746, nil, nil, nil, 3, 2)
-local yellCorruptedBlood			= mod:NewYell(322746)
 local specWarnPiercingBarb			= mod:NewSpecialWarningDefensive(322736, "Tank", nil, nil, 1, 2)
 --Son of Hakkar:
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(323569, nil, nil, nil, 1, 8)
@@ -50,6 +49,7 @@ local timerCorruptedBloodCD			= mod:NewCDTimer(17.1, 322746, nil, nil, nil, 3)
 local timerPiercingBarbCD			= mod:NewCDTimer(8.5, 322736, nil, "Tank|Healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)--8.9-22.7 (blood barrier delays
 --Son of Hakkar:
 --local timerDevotedSacrificeCD		= mod:NewCDTimer(46, 332329, nil, nil, nil, 1)
+local yellCorruptedBlood			= mod:NewYell(322746, nil, nil, nil, "YELL")
 
 mod:AddRangeFrameOption(8, 322746)--Spell is 7, but can't do 7 in api
 mod:AddNamePlateOption("NPAuraOnFixate", 328987)

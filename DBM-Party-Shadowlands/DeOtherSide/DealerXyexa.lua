@@ -33,9 +33,6 @@ local warnArcaneLightning			= mod:NewTargetNoFilterAnnounce(323687, 2)
 
 local specWarnExplosiveContrivance	= mod:NewSpecialWarningMoveTo(320230, nil, 201291, nil, 3, 2)--"Explosion" shortname
 local specWarnLocalizedExplosive	= mod:NewSpecialWarningMoveTo(321948, nil, 188104, nil, 3, 2)--"Localized Explosion" shortname
-local yellLocalizedExplosive		= mod:NewYell(321948)
-local yellLocalizedExplosiveFades	= mod:NewShortFadesYell(321948)
-local yellArcaneLightning			= mod:NewYell(323687)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerDisplacementTrapCD		= mod:NewCDTimer(16.1, 319619, nil, nil, nil, 3)--16.1-19.4
@@ -43,6 +40,10 @@ local timerDisplacedBlastwaveCD		= mod:NewCDTimer(17, 320326, nil, nil, nil, 3)-
 local timerExplosiveContrivanceCD	= mod:NewCDTimer(35.1, 320230, 201291, nil, nil, 2, nil, DBM_COMMON_L.DEADLY_ICON)--"Explosion" shortname
 local timerLocalizedExplosiveCD		= mod:NewCDTimer(35.1, 321948, 188104, nil, nil, 3, nil, DBM_COMMON_L.DEADLY_ICON)--"Localized Explosion" shortname
 local timerArcaneLightningCD		= mod:NewCDTimer(9, 323687, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)--Only cast once, then just bounces every 9 seconds
+
+local yellLocalizedExplosive		= mod:NewYell(321948, nil, nil, nil, "YELL")
+local yellLocalizedExplosiveFades	= mod:NewShortFadesYell(321948, nil, nil, nil, "YELL")
+local yellArcaneLightning			= mod:NewYell(323687, nil, nil, nil, "YELL")
 
 local trapName = DBM:GetSpellInfo(319619)
 

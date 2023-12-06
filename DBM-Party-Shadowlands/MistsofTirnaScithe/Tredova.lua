@@ -34,17 +34,18 @@ local specWarnConsumption			= mod:NewSpecialWarningDodge(322450, nil, nil, nil, 
 local specWarnConsumptionKick		= mod:NewSpecialWarningInterrupt(322450, "HasInterrupt", nil, 2, 1, 2)
 local specWarnAcceleratedIncubation	= mod:NewSpecialWarningSwitch(322550, "Dps", nil, nil, 1, 2)
 local specWarnMindLink				= mod:NewSpecialWarningMoveAway(322648, nil, nil, nil, 1, 11)
-local yellMindLink					= mod:NewYell(322648)
 local specWarnMarkthePrey			= mod:NewSpecialWarningYou(322563, nil, nil, nil, 1, 2)
 local specWarnAcidExpulsion			= mod:NewSpecialWarningDodge(322654, nil, nil, nil, 2, 2)
 local specWarnParasiticInfesterKick	= mod:NewSpecialWarning("specWarnParasiticInfesterKick", nil, nil, nil, 1, 2, 4, 337235, 337235)
-local yellParasiticInfester			= mod:NewYell(337235, L.Infester, true, "yellParasiticInfester")
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(326309, nil, nil, nil, 1, 8)
 
 local timerAcceleratedIncubationCD	= mod:NewCDTimer(34, 322550, nil, nil, nil, 1, nil, nil, true)--34-43?
 local timerMindLinkCD				= mod:NewCDTimer(15.4, 322648, nil, nil, nil, 3, nil, nil, true)--15-19, still not cast if everyone already affected by it.
 local timerAcidExpulsionCD			= mod:NewCDTimer(19.4, 322654, nil, nil, nil, 3, nil, nil, true)--19-26
 local timerParasiticInfesterCD		= mod:NewTimer(23, "timerParasiticInfesterCD", 337235, nil, nil, 4, DBM_COMMON_L.MYTHIC_ICON..DBM_COMMON_L.INTERRUPT_ICON, true)--23-26.3
+
+local yellMindLink					= mod:NewYell(322648, nil, nil, nil, "YELL")
+local yellParasiticInfester			= mod:NewYell(337235, L.Infester, true, "yellParasiticInfester", "YELL")
 
 mod:AddInfoFrameOption(322527, true)
 mod:AddSetIconOption("SetIconOnMindLink", 322648, true, false, {1, 2, 3, 4, 5})

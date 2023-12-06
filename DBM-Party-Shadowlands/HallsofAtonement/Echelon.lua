@@ -32,8 +32,6 @@ local specWarnCurseofStoneDispel	= mod:NewSpecialWarningDispel(319603, "RemoveCu
 local specWarnCurseofStone			= mod:NewSpecialWarningYou(319603, nil, nil, nil, 1, 2)
 local specWarnBloodTorrent			= mod:NewSpecialWarningSpell(319702, nil, nil, nil, 2, 2)
 local specWarnStoneShatteringLeap	= mod:NewSpecialWarningYou(319592, nil, 47482, nil, 1, 2)
-local yellStoneShatteringLeap		= mod:NewYell(319592, 47482)
-local yellStoneShatteringLeapFades	= mod:NewShortFadesYell(319592, 47482)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerStoneCallCD				= mod:NewCDTimer(37.6, 319733, nil, nil, nil, 1, nil, DBM_COMMON_L.DAMAGE_ICON)--37.6-49.19 (42-51 now? Or maybe health based)
@@ -42,6 +40,9 @@ local timerCurseofStoneCD			= mod:NewCDTimer(29.1, 319603, nil, nil, nil, 3, nil
 local timerBloodTorrentCD			= mod:NewCDTimer(16.9, 319702, nil, nil, nil, 2)--16.9 unless delayed by one of other casts
 
 mod:AddNamePlateOption("NPAuraOnStoneForm", 319724)
+
+local yellStoneShatteringLeap		= mod:NewYell(319592, 47482, nil, nil, "YELL")
+local yellStoneShatteringLeapFades	= mod:NewShortFadesYell(319592, 47482, nil, nil, "YELL")
 
 function mod:LeapTarget(targetname, uId, bossuid, scanningTime)
 	if not targetname then return end

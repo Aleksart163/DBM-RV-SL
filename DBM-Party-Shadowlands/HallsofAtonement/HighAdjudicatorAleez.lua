@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 local warnFixate					= mod:NewTargetNoFilterAnnounce(323650, 4)
 
 local specWarnFixate				= mod:NewSpecialWarningYou(323650, nil, nil, nil, 3, 2)
-local yellFixate					= mod:NewYell(323650)
 local specWarnBoltofPower			= mod:NewSpecialWarningInterrupt(323538, false, nil, nil, 1, 2)
 local specWarnVolleyofPower			= mod:NewSpecialWarningInterrupt(323552, "HasInterrupt", nil, nil, 1, 2)
 local specWarnAnimaFountain			= mod:NewSpecialWarningDodge(329340, nil, nil, nil, 2, 2)
@@ -38,6 +37,8 @@ local specWarnAnimaFountain			= mod:NewSpecialWarningDodge(329340, nil, nil, nil
 local timerVolleyofPowerCD			= mod:NewCDTimer(10.9, 323552, nil, nil, nil, 4, nil, DBM_COMMON_L.INTERRUPT_ICON)--12-20
 local timerSpectralProcessionCD		= mod:NewCDTimer(20.6, 323597, nil, nil, nil, 1)
 local timerAnimaFountainCD			= mod:NewCDTimer(24.2, 329340, nil, nil, nil, 3)
+
+local yellFixate					= mod:NewYell(323650, nil, nil, nil, "YELL")
 
 mod:AddNamePlateOption("NPAuraOnFixate", 323650, true)
 mod:GroupSpells(323597, 323650)--Group spectral with associated fixate debuff

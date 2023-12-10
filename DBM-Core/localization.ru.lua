@@ -382,6 +382,7 @@ L.AUTO_SPEC_WARN_TEXTS.adds				= "Прибыли адды - смени цель"
 L.AUTO_SPEC_WARN_TEXTS.addscount		= "Прибыли адды - смени цель (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.addscustom		= "Прибыли адды - %%s"
 L.AUTO_SPEC_WARN_TEXTS.targetchange		= "Смена цели - переключись на %%s"
+--
 L.AUTO_SPEC_WARN_TEXTS.usespell			= "%s - используй %%s"
 
 -- Auto-generated Special Warning Localizations

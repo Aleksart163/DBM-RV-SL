@@ -57,7 +57,7 @@ function mod:VolatileTrapTarget(targetname, uId)
 		specWarnVolatileTrap:Show()
 		specWarnVolatileTrap:Play("watchstep")
 		yellVolatileTrap:Yell()
-	elseif self:AntiSpam(2, "VolatileTrap") then
+	elseif self:AntiSpam(2, 10) then
 		warnVolatileTrap:Show()
 	end
 end

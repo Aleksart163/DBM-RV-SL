@@ -32,7 +32,7 @@ local yellRicochetingBlade					= mod:NewYell(333861)
 local specWarnDemoralizingShout				= mod:NewSpecialWarningInterrupt(330562, "HasInterrupt", nil, nil, 1, 2)
 --Notable Kul'tharok Trash
 local specWarnBindSoul						= mod:NewSpecialWarningInterrupt(330810, "HasInterrupt", nil, nil, 1, 2)
-local specWarnDeathWinds					= mod:NewSpecialWarningDodge(333294, nil, nil, nil, 2, 2)--Maybe change to airhorn?
+local specWarnDeathWinds					= mod:NewSpecialWarningDodge(333294, nil, nil, nil, 2, 2) --Смертоносные ветра
 --Other trash that apparently wasn't notable enough for guide
 local specWarnBoneSpikes					= mod:NewSpecialWarningDodge(331237, nil, nil, nil, 2, 2)
 local specWarnSearingDeath					= mod:NewSpecialWarningInterrupt(333231, "HasInterrupt", nil, nil, 1, 2)
@@ -73,7 +73,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 330614 and self:AntiSpam(3, 2) then
 		specWarnVileEruption:Show()
 		specWarnVileEruption:Play("watchstep")
-	elseif spellId == 333294 and self:AntiSpam(2, "DeathWinds") then
+	elseif spellId == 333294 and self:AntiSpam(2, 10) then
 		specWarnDeathWinds:Show()
 		specWarnDeathWinds:Play("watchstep")
 	elseif spellId == 331237 and self:AntiSpam(3, 2) then

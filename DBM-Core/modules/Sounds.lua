@@ -164,6 +164,8 @@ do
 		battleMusic = {
 			{text = CL.NONE,value  = "None"},
 			{text = CL.RANDOM,value  = "Random"},
+			{text = "FNaF Security Breach",value = "Interface\\AddOns\\DBM-Core\\sounds\\Custom\\SecurityBreach.mp3", length=198},
+			{text = "Nightsong Extended",value = "Interface\\AddOns\\DBM-Core\\sounds\\Custom\\Nightsong.mp3", length=217},
 			{text = "Anduin Part 2 B",value = 1417248, length=111},--"sound\\music\\Legion\\MUS_70_AnduinPt2_B.mp3" Soundkit: 68230
 			{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
 			{text = "Invincible",value = 1100052, length=197},--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
@@ -172,6 +174,8 @@ do
 		battleMusic = {
 			{text = CL.NONE,value  = "None"},
 			{text = CL.RANDOM,value  = "Random"},
+			{text = "FNaF Security Breach",value = "Interface\\AddOns\\DBM-Core\\sounds\\Custom\\SecurityBreach.mp3", length=198},
+			{text = "Nightsong Extended",value = "Interface\\AddOns\\DBM-Core\\sounds\\Custom\\Nightsong.mp3", length=217},
 			{text = "Anduin Part 2 B",value = 1417248, length=111},--"sound\\music\\Legion\\MUS_70_AnduinPt2_B.mp3" Soundkit: 68230
 			{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
 			{text = "Invincible",value = 1100052, length=197},--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
